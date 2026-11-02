@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1020">
+  <title>ML Squad — Community Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="ambient"></div>
+  <header class="topbar wrap">
+    <a class="brand" href="#"><span class="logo">ML</span><span><b>ML SQUAD</b><small>COMMUNITY HUB</small></span></a>
+    <span class="tagline">✨ Main bareng, berkembang bareng.</span>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <div class="hero-copy">
+        <span class="eyebrow">⚡ TEMPATNYA PLAYER MLBB BERKUMPUL</span>
+        <h1>Tukar <em>Like.</em><br>Cari Teman <em>Mabar.</em></h1>
+        <p>Bangun koneksi dengan sesama pemain Mobile Legends. Saling bantu, cari party yang cocok, dan tetap sportif serta saling menghargai.</p>
+        <div class="pills"><span>💚 Saling like</span><span>🎮 Cari party</span><span>🔖 Simpan postingan</span></div>
+      </div>
+      <aside class="hero-card">
+        <div class="hero-card-icon">🤝</div>
+        <h3>Komunitas yang saling support</h3>
+        <p><b>Fair play dua arah:</b> jika memilih tukaran like, kunjungi profil teman dan berikan like sesuai kesepakatan. Jangan melakukan spam.</p>
+        <div class="mini-stats"><span><b>01</b><small>Posting</small></span><span><b>02</b><small>Terhubung</small></span><span><b>03</b><small>Mabar</small></span></div>
+      </aside>
+    </section>
+
+    <section class="panel auth-panel" id="authPanel">
+      <div class="section-head"><div><span class="eyebrow">AKUN ML SQUAD</span><h2 id="authTitle">Masuk ke akun</h2></div><span class="plus">🔐</span></div>
+      <form id="authForm">
+        <div class="field"><label for="authEmail">Email</label><input id="authEmail" type="email" autocomplete="email" required placeholder="nama@email.com"></div>
+        <div class="field"><label for="authPassword">Password</label><input id="authPassword" type="password" minlength="6" autocomplete="current-password" required placeholder="Minimal 6 karakter"></div>
+        <button class="primary-btn" id="authSubmit" type="submit">Masuk</button>
+        <button class="link-btn" id="toggleAuth" type="button">Belum punya akun? Daftar</button>
+        <p class="message" id="authMessage" role="status"></p>
+      </form>
+      <div id="accountInfo" class="hidden">
+        <p id="signedInAs"></p><button class="secondary-btn" id="logoutBtn" type="button">Keluar</button>
+      </div>
+    </section>
+
+    <nav class="tabs" aria-label="Filter postingan">
+      <button class="tab active" data-filter="all">🌐 Semua postingan</button>
+      <button class="tab" data-filter="like">💚 Tukaran Like</button>
+      <button class="tab" data-filter="mabar">🎮 Cari Teman Mabar</button>
+    </nav>
+
+    <section class="columns">
+      <section class="panel create-panel">
+        <div class="section-head"><div><span class="eyebrow">BAGIKAN KE KOMUNITAS</span><h2>Buat Postingan</h2></div><span class="plus">＋</span></div>
+        <form id="postForm">
+          <label>Kategori postingan</label>
+          <div class="category-choice">
+            <label class="choice"><input type="radio" name="category" value="like" checked><span>💚 Tukaran Like</span></label>
+            <label class="choice"><input type="radio" name="category" value="mabar"><span>🎮 Cari Teman Mabar</span></label>
+          </div>
+          <div class="field-grid">
+            <div class="field"><label for="nickname">Nama / Nickname</label><input id="nickname" maxlength="28" required placeholder="Contoh: Didin"></div>
+            <div class="field"><label for="playerId">ID Mobile Legends</label><input id="playerId" inputmode="numeric" maxlength="20" required placeholder="Contoh: 123456789"></div>
+            <div class="field"><label for="zoneId">Zone ID</label><input id="zoneId" inputmode="numeric" maxlength="8" required placeholder="Contoh: 1234"></div>
+          </div>
+          <div id="likeFields">
+            <label>Target tukaran like</label>
+            <div class="field"><select id="likeTarget"><option value="Saling like profil">Saling like profil</option><option value="Bantu like dulu, balas setelahnya">Bantu like dulu, balas setelahnya</option></select></div>
+            <div class="field"><label for="likeNote">Catatan (opsional)</label><textarea id="likeNote" maxlength="240" rows="3" placeholder="Tulis pesan singkat..."></textarea></div>
+          </div>
+          <div id="mabarFields" class="hidden">
+            <div class="field-grid">
+              <div class="field"><label for="rank">Rank</label><select id="rank"><option>Warrior</option><option>Elite</option><option>Master</option><option>Grandmaster</option><option>Epic</option><option>Legend</option><option>Mythic</option><option>Mythical Honor</option><option>Mythical Glory</option><option>Mythical Immortal</option></select></div>
+              <div class="field"><label for="role">Role favorit</label><select id="role"><option>Fleksibel</option><option>Roam</option><option>Jungler</option><option>Mid Lane</option><option>Gold Lane</option><option>EXP Lane</option></select></div>
+            </div>
+            <div class="field"><label for="mabarNote">Kriteria teman (opsional)</label><textarea id="mabarNote" maxlength="240" rows="3" placeholder="Contoh: santai, komunikasi aktif, no toxic..."></textarea></div>
+          </div>
+          <button class="primary-btn" type="submit">Publikasikan postingan ↗</button>
+          <p class="privacy">🔒 Postingan tersimpan online di Firebase. Jangan pernah memasukkan password, OTP, atau informasi pribadi.</p>
+          <p id="formMessage" class="message" role="status"></p>
+        </form>
+      </section>
+
+      <section class="feed-section">
+        <div class="feed-heading"><div><span class="eyebrow">TEMUKAN TEMAN BARU</span><h2 id="feedTitle">Semua Postingan</h2></div><span class="count" id="postCount">0 POST</span></div>
+        <div id="feed" class="feed"><div class="loading">Menghubungkan ke komunitas...</div></div>
+      </section>
+    </section>
+
+    <section class="donate">
+      <div><span class="eyebrow">DUKUNG ML SQUAD</span><h2>Bantu komunitas ini terus berkembang 💛</h2><p>Dukunganmu membantu menjaga komunitas tetap aktif.</p></div>
+      <div class="donate-actions"><a class="secondary-btn" href="https://saweria.co/donatesaya" target="_blank" rel="noopener noreferrer">💛 Donasi Saweria</a><button class="copy-btn" id="copyDana">📋 Salin nomor DANA</button></div>
+      <p id="copyMessage" class="copy-message"></p>
+    </section>
+  </main>
+
+  <footer class="wrap footer">
+    <span>© <span id="year"></span> ML SQUAD COMMUNITY</span>
+    <span>ML Squad adalah komunitas independen buatan penggemar dan tidak berafiliasi dengan Moonton.</span>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@5/dist/email.min.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

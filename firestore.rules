@@ -1,0 +1,59 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function ownsPost() { return signedIn() && resource.data.ownerUid == request.auth.uid; }
+
+    // Satu dokumen rate limit per akun. Waktu berasal dari server Firestore.
+    match /rateLimits/{uid} {
+      allow read: if signedIn() && request.auth.uid == uid;
+      allow create: if signedIn() && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['uid','lastPostAt'])
+        && request.resource.data.uid == uid
+        && request.resource.data.lastPostAt == request.time;
+      allow update: if signedIn() && request.auth.uid == uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['lastPostAt'])
+        && request.resource.data.lastPostAt == request.time
+        && request.time >= resource.data.lastPostAt + duration.value(5, 'm');
+      allow delete: if false;
+    }
+
+    match /posts/{postId} {
+      allow read: if true;
+      allow create: if signedIn()
+        && request.resource.data.ownerUid == request.auth.uid
+        && request.resource.data.keys().hasAll([
+          'category','nickname','playerId','zoneId','note','done','ownerUid','createdAt'
+        ])
+        && request.resource.data.category in ['like','mabar']
+        && request.resource.data.nickname is string
+        && request.resource.data.nickname.size() > 0
+        && request.resource.data.nickname.size() <= 28
+        && request.resource.data.playerId is string
+        && request.resource.data.zoneId is string
+        && request.resource.data.note is string
+        && request.resource.data.note.size() <= 240
+        && request.resource.data.done == false
+        && request.resource.data.createdAt == request.time
+        && getAfter(/databases/$(database)/documents/rateLimits/$(request.auth.uid)).data.lastPostAt == request.time;
+
+      allow update: if ownsPost()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['done'])
+        && request.resource.data.done == true;
+      allow delete: if ownsPost();
+
+      match /replies/{replyId} {
+        allow read: if true;
+        allow create: if signedIn()
+          && request.resource.data.keys().hasOnly(['text','uid','email','createdAt'])
+          && request.resource.data.uid == request.auth.uid
+          && request.resource.data.email == request.auth.token.email
+          && request.resource.data.text is string
+          && request.resource.data.text.size() > 0
+          && request.resource.data.text.size() <= 300
+          && request.resource.data.createdAt == request.time;
+        allow update, delete: if signedIn() && resource.data.uid == request.auth.uid;
+      }
+    }
+  }
+}
